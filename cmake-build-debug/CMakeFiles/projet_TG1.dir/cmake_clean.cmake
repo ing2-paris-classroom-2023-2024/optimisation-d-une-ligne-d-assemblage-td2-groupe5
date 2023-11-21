@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/projet_TG1.dir/anna.c.obj"
+  "CMakeFiles/projet_TG1.dir/anna.c.obj.d"
   "CMakeFiles/projet_TG1.dir/main.c.obj"
   "CMakeFiles/projet_TG1.dir/main.c.obj.d"
   "libprojet_TG1.dll.a"

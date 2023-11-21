@@ -128,6 +128,30 @@ projet_TG1/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\projet_TG1.dir\build.make CMakeFiles/projet_TG1.dir/build
 .PHONY : projet_TG1/fast
 
+anna.obj: anna.c.obj
+.PHONY : anna.obj
+
+# target to build an object file
+anna.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\projet_TG1.dir\build.make CMakeFiles/projet_TG1.dir/anna.c.obj
+.PHONY : anna.c.obj
+
+anna.i: anna.c.i
+.PHONY : anna.i
+
+# target to preprocess a source file
+anna.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\projet_TG1.dir\build.make CMakeFiles/projet_TG1.dir/anna.c.i
+.PHONY : anna.c.i
+
+anna.s: anna.c.s
+.PHONY : anna.s
+
+# target to generate assembly for a file
+anna.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\projet_TG1.dir\build.make CMakeFiles/projet_TG1.dir/anna.c.s
+.PHONY : anna.c.s
+
 main.obj: main.c.obj
 .PHONY : main.obj
 
@@ -161,6 +185,9 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... projet_TG1
+	@echo ... anna.obj
+	@echo ... anna.i
+	@echo ... anna.s
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s

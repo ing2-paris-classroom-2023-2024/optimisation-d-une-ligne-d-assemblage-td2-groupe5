@@ -8,6 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "C:/Users/annap/CLionProjects/projetV1/anna.c" "CMakeFiles/projet_TG1.dir/anna.c.obj" "gcc" "CMakeFiles/projet_TG1.dir/anna.c.obj.d"
   "C:/Users/annap/CLionProjects/projetV1/main.c" "CMakeFiles/projet_TG1.dir/main.c.obj" "gcc" "CMakeFiles/projet_TG1.dir/main.c.obj.d"
   )
 

@@ -76,6 +76,15 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="C:/Users/annap/CLionProjects/projetV1/anna.c">
+			<Option target="projet_TG1"/>
+		</Unit>
+		<Unit filename="C:/Users/annap/CLionProjects/projetV1/anna.h">
+			<Option target="projet_TG1"/>
+		</Unit>
+		<Unit filename="C:/Users/annap/CLionProjects/projetV1/header.h">
+			<Option target="projet_TG1"/>
+		</Unit>
 		<Unit filename="C:/Users/annap/CLionProjects/projetV1/main.c">
 			<Option target="projet_TG1"/>
 		</Unit>
