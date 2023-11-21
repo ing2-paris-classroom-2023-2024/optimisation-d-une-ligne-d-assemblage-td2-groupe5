@@ -12,6 +12,5 @@ void test();
 void afficherFichier (char *nomFichier);
 int compterContraintes(char *nomFichier);
 
-//int NbContraintes(char *nomFichier);
 
 #endif //PROJET_TG1_ANNA_H
