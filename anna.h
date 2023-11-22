@@ -7,10 +7,22 @@
 
 #include "header.h"
 
-void test();
 
 void afficherFichier (char *nomFichier);
 int compterContraintes(char *nomFichier);
+
+//void menu(char *nomFichier, FILE *fichier);
+void menu(char *nomFichier);
+
+typedef struct grapheContraintes {
+    int nbSommets;
+    int nbArcs;
+    int nbContraintes;
+
+    //matrice que je parcours pour parcourir tous les trucs, ca explore et liste les contraintes
+    int **matriceAdjacence;
+    int *tabContraintes;
+} t_grapheContraintes;
 
 
 #endif //PROJET_TG1_ANNA_H
