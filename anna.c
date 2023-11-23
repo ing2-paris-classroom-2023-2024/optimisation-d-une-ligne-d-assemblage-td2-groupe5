@@ -34,8 +34,15 @@ int compterExclusions(char *nomFichier){
 
 
 
+
+
+void InfosGraphe(char *nomFichier, t_grapheExclusions *graphe){
+}
+
+
+
 void menu(char *nomFichier) {
-    t_grapheexclusions *grapheexclusions = malloc(sizeof(t_grapheexclusions));
+    t_grapheExclusions *grapheexclusions = malloc(sizeof(t_grapheExclusions));
     if (grapheexclusions == NULL) {
         printf("Erreur lors de l'allocation de la mémoire.\n");
         return;
@@ -75,9 +82,6 @@ void menu(char *nomFichier) {
             printf("Le nombre de exclusions est de : %d\n", grapheexclusions->nbExclusions);
         }
 
-    }
-    else {
-        printf("Le fichier n'est pas valide.\n");
     }
 
     free(grapheexclusions);
