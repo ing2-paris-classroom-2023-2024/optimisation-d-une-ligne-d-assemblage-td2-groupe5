@@ -9,19 +9,19 @@
 
 
 void afficherFichier (char *nomFichier);
-int compterContraintes(char *nomFichier);
+int compterExclusions(char *nomFichier);
 
 void menu(char *nomFichier);
 
-typedef struct grapheContraintes {
+typedef struct grapheExclusions {
     int nbSommets;
     int nbArcs;
-    int nbContraintes;
+    int nbExclusions;
 
-    //matrice que je parcours pour parcourir tous les trucs, ca explore et liste les contraintes
+    //matrice que je parcours pour parcourir tous les trucs, ca explore et liste les exclusions
     int **matriceAdjacence;
-    int *tabContraintes;
-} t_grapheContraintes;
+    int *tabExclusions;
+} t_grapheexclusions;
 
 
 #endif //PROJET_TG1_ANNA_H

@@ -16,42 +16,42 @@ void afficherFichier(char *nomFichier) {
     fclose(fichier);
 }
 
-int compterContraintes(char *nomFichier){
+int compterExclusions(char *nomFichier){
     FILE *fichier = fopen(nomFichier, "r");
 
-    int nbContraintes = 0;
+    int nbExclusions = 0;
     char c = 0;
 
     while ((c = fgetc(fichier)) != EOF) {
         if (c == '\n') {
-            nbContraintes++;
+            nbExclusions++;
         }
     }
 
     fclose(fichier);
-    return nbContraintes;
+    return nbExclusions;
 }
 
 
 
 void menu(char *nomFichier) {
-    t_grapheContraintes *grapheContraintes = malloc(sizeof(t_grapheContraintes));
-    if (grapheContraintes == NULL) {
+    t_grapheexclusions *grapheexclusions = malloc(sizeof(t_grapheexclusions));
+    if (grapheexclusions == NULL) {
         printf("Erreur lors de l'allocation de la mémoire.\n");
         return;
     }
 
-    grapheContraintes->nbContraintes = 0;
+    grapheexclusions->nbExclusions = 0;
 
     FILE *fichier;
 
     do{
-        printf("Choisissez le fichier a ouvrir : 1)contraintes \n");
+        printf("Choisissez le fichier a ouvrir : 1)exclusions \n");
         scanf("%s", nomFichier);
 
         fichier = fopen(nomFichier, "r");
 
-        //ici faut mettre le nb de sommets/nb arcs/tab contraintes et matrices adjacentes
+        //ici faut mettre le nb de sommets/nb arcs/tab exclusions et matrices adjacentes
 
 
         if (fichier == NULL) {
@@ -61,18 +61,18 @@ void menu(char *nomFichier) {
         }
     } while (fichier == NULL);
 
-    printf("Voici le contenu du fichier de contraintes : \n");
+    printf("Voici le contenu du fichier de exclusions : \n");
     afficherFichier(nomFichier);
 
-    if (strcmp(nomFichier, "contraintes.txt") == 0) {
-        grapheContraintes->nbContraintes = compterContraintes(nomFichier);
+    if (strcmp(nomFichier, "exclusions.txt") == 0) {
+        grapheexclusions->nbExclusions = compterExclusions(nomFichier);
 
-        if (grapheContraintes->nbContraintes == -1) {
+        if (grapheexclusions->nbExclusions == -1) {
             printf("Erreur lors de la lecture du fichier.\n");
-        } else if (grapheContraintes->nbContraintes == 0) {
+        } else if (grapheexclusions->nbExclusions == 0) {
             printf("Le fichier est vide.\n");
         } else {
-            printf("Le nombre de contraintes est de : %d\n", grapheContraintes->nbContraintes);
+            printf("Le nombre de exclusions est de : %d\n", grapheexclusions->nbExclusions);
         }
 
     }
@@ -80,5 +80,5 @@ void menu(char *nomFichier) {
         printf("Le fichier n'est pas valide.\n");
     }
 
-    free(grapheContraintes);
+    free(grapheexclusions);
 }
