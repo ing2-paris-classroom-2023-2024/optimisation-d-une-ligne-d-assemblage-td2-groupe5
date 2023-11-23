@@ -11,7 +11,6 @@
 void afficherFichier (char *nomFichier);
 int compterContraintes(char *nomFichier);
 
-//void menu(char *nomFichier, FILE *fichier);
 void menu(char *nomFichier);
 
 typedef struct grapheContraintes {
