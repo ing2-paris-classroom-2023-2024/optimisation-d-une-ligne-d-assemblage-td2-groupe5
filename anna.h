@@ -7,44 +7,35 @@
 
 #include "header.h"
 
+//CHANGER LES VARIABLES GLOBALES
+#define MAX_SOMMETS 100 // Nombre maximum de sommets dans le graphe
+#define MAX_COULEURS 10 // Nombre maximum de couleurs
 
-typedef struct sommet {
-    int couleur;
-    int numerodesommet;
-    //si le sommet est deja colorié alors on le passe a true
-    bool colorie;
-} t_sommet;
-
-typedef struct graphe {
+typedef struct graphe{
     int nbSommets;
     int nbArcs;
-    t_sommet *tabSommets;
-    int **matriceAdjacence;
+    int matriceAdjacence[MAX_SOMMETS][MAX_SOMMETS];
+    int degres[MAX_SOMMETS];
+    int sommetsTries[MAX_SOMMETS];
+    char couleurs[MAX_SOMMETS][MAX_COULEURS];
 } t_graphe;
 
+void initialiserGraphe(t_graphe *graphe);
 
+void lireFichier(char *nomFichier, t_graphe *graphe);
 
+void calculerDegres(t_graphe *graphe);
 
+void trierSommets(t_graphe *graphe);
 
-typedef struct grapheExclusions {
-    int nbSommets;
-    int nbArcs;
-    int nbExclusions;
-    //matrice que je parcours pour parcourir tous les trucs, ca explore et liste les exclusions
-    int **matriceAdjacence;
-    int *tabExclusions;
-} t_grapheExclusions;
+void attribuerCouleurs(t_graphe *graphe);
 
+void afficherGrapheTrie(t_graphe *graphe);
 
+void afficherGrapheColorie(t_graphe *graphe);
 
+void afficherSommetsAdjacents(t_graphe *graphe, int sommet);
 
-void afficherFichier (char *nomFichier);
-
-int compterExclusions(char *nomFichier);
-
-void menu(char *nomFichier);
-
-
-
+void menuExclusions();
 
 #endif //PROJET_TG1_ANNA_H

@@ -3,9 +3,7 @@
 
 int main(){
 
-    char nomFichier[100];
-    FILE *fichier;
-    menu(nomFichier);
+    menuExclusions();
 
     return 0;
 }
