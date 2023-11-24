@@ -8,29 +8,19 @@
 #include "header.h"
 
 
-/*typedef struct sommet{
-    int op;
+typedef struct sommet {
     int couleur;
-}t_sommet;
+    int numerodesommet;
+    //si le sommet est deja colorié alors on le passe a true
+    bool colorie;
+} t_sommet;
 
-//pointeur sur un sommet
-typedef t_sommet *psommet;
-
-
-typedef struct exclusion {
-    int op1;
-    int op2;
-} t_exclusion;
-
-//pointeur sur une exclusion
-typedef t_exclusion *pexclusion;
-
-typedef struct grapheExclusions {
+typedef struct graphe {
     int nbSommets;
-    psommet *psommets;
-    int nbAretes;
-    pexclusion *pexclusions;
-} t_grapheExclusions;*/
+    int nbArcs;
+    t_sommet *tabSommets;
+    int **matriceAdjacence;
+} t_graphe;
 
 
 

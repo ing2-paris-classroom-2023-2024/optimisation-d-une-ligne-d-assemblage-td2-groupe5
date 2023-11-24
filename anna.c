@@ -35,12 +35,6 @@ int compterExclusions(char *nomFichier){
 
 
 
-
-void InfosGraphe(char *nomFichier, t_grapheExclusions *graphe){
-}
-
-
-
 void menu(char *nomFichier) {
     t_grapheExclusions *grapheexclusions = malloc(sizeof(t_grapheExclusions));
     if (grapheexclusions == NULL) {
