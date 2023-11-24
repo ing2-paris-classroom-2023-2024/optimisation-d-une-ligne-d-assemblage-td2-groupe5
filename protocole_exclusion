@@ -1,0 +1,138 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct {
+    int identite;
+    int degre;
+    int *voisins;
+} t_sommet;
+
+typedef struct {
+    int nombredesommet;
+    int nombredarcs;
+    int **matriceadjacente;
+    t_sommet *sommets;
+} t_graphe;
+
+void liberer_graphe(t_graphe *graphe);
+int classerdecroissancesommets(const void *a, const void *b);
+
+void trier_sommets_decroissant(t_graphe *graphe) {
+    qsort(graphe->sommets, graphe->nombredesommet, sizeof(t_sommet), classerdecroissancesommets);
+}
+
+void compter_sommets_arcs(char *nom_fichier, int *nombredesommet, int *nombredarcs) {
+    FILE *fichier = fopen(nom_fichier, "r");
+    if (fichier == NULL) {
+        printf("Erreur lors de l'ouverture du fichier %s\n", nom_fichier);
+        exit(EXIT_FAILURE);
+    }
+    int sommet1, sommet2;
+    *nombredesommet = 0;
+    *nombredarcs = 0;
+    while (fscanf(fichier, "%d %d", &sommet1, &sommet2) != EOF) {
+        if (sommet1 > *nombredesommet) {
+            *nombredesommet = sommet1;
+        }
+        if (sommet2 > *nombredesommet) {
+            *nombredesommet = sommet2;
+        }
+        (*nombredarcs)++;
+    }
+    fclose(fichier);
+    (*nombredesommet)++;
+}
+
+t_graphe *creer_graphe(int nombredesommet, int nombredarcs) {
+    t_graphe *graphe = malloc(sizeof(t_graphe));
+    graphe->nombredesommet = nombredesommet;
+    graphe->nombredarcs = nombredarcs;
+    graphe->sommets = malloc(nombredesommet * sizeof(t_sommet));
+    graphe->matriceadjacente = malloc(nombredesommet * sizeof(int *));
+    for (int i = 0; i < nombredesommet; i++) {
+        graphe->matriceadjacente[i] = malloc(nombredesommet * sizeof(int));
+        for (int j = 0; j < nombredesommet; j++) {
+            graphe->matriceadjacente[i][j] = 0;
+        }
+    }
+    for (int i = 0; i < nombredesommet; i++) {
+        graphe->sommets[i].identite = i;
+        graphe->sommets[i].degre = 0;
+        graphe->sommets[i].voisins = malloc(nombredesommet * sizeof(int));
+    }
+    return graphe;
+}
+
+t_graphe *lire_graphe(char *nom_fichier) {
+    int nombredesommet, nombredarcs;
+    compter_sommets_arcs(nom_fichier, &nombredesommet, &nombredarcs);
+
+    t_graphe *graphe = creer_graphe(nombredesommet, nombredarcs);
+
+    FILE *fichier = fopen(nom_fichier, "r");
+    if (fichier == NULL) {
+        printf("Erreur lors de l'ouverture du fichier %s\n", nom_fichier);
+        exit(EXIT_FAILURE);
+    }
+
+    int sommet1, sommet2;
+    while (fscanf(fichier, "%d %d", &sommet1, &sommet2) != EOF) {
+        sommet1--;
+        sommet2--;
+        graphe->matriceadjacente[sommet1][sommet2] = 1;
+        graphe->matriceadjacente[sommet2][sommet1] = 1;
+        graphe->sommets[sommet1].voisins[graphe->sommets[sommet1].degre] = sommet2;
+        graphe->sommets[sommet1].degre++;
+        graphe->sommets[sommet2].voisins[graphe->sommets[sommet2].degre] = sommet1;
+        graphe->sommets[sommet2].degre++;
+    }
+
+    fclose(fichier);
+
+    trier_sommets_decroissant(graphe);
+
+    return graphe;
+}
+
+int classerdecroissancesommets(const void *a, const void *b) {
+    t_sommet *sommet1 = (t_sommet *)a;
+    t_sommet *sommet2 = (t_sommet *)b;
+    return (sommet2->degre - sommet1->degre);
+}
+
+void afficher_graphe(t_graphe *graphe) {
+    printf("Nombre de sommets : %d\n", graphe->nombredesommet);
+    printf("Nombre de contraintes : %d\n", graphe->nombredarcs);
+    printf("Matrice d'adjacence : \n");
+    for (int i = 0; i < graphe->nombredesommet; i++) {
+        for (int j = 0; j < graphe->nombredesommet; j++) {
+            printf("%d ", graphe->matriceadjacente[i][j]);
+        }
+        printf("\n");
+    }
+    printf("Liste des sommets par degre : \n");
+    for (int i = 0; i < graphe->nombredesommet; i++) {
+        printf("Sommet %d (degre %d): ", graphe->sommets[i].identite, graphe->sommets[i].degre);
+        for (int j = 0; j < graphe->sommets[i].degre; j++) {
+            printf("%d ", graphe->sommets[i].voisins[j]);
+        }
+        printf("\n");
+    }
+}
+
+int main() {
+    t_graphe *graphe = lire_graphe("contraintes.txt");
+    afficher_graphe(graphe);
+    liberer_graphe(graphe);
+    return 0;
+}
+
+void liberer_graphe(t_graphe *graphe) {
+    for (int i = 0; i < graphe->nombredesommet; i++) {
+        free(graphe->matriceadjacente[i]);
+        free(graphe->sommets[i].voisins);
+    }
+    free(graphe->matriceadjacente);
+    free(graphe->sommets);
+    free(graphe);
+}
