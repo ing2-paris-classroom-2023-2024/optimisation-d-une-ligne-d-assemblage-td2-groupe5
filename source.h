@@ -8,30 +8,30 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct {
-    int identite;
-    int degre;
-    int couleur;
-    int *voisins;
-} t_sommet;
+typedef struct { //structure d'un sommet
+    int identite; //identifiant du sommet (numéro)
+    int degre; //degré du sommet
+    int couleur; //couleur du sommet
+    int *voisins; //tableau des voisins du sommet
+} t_sommet; //nom de la structure
 
-typedef struct {
-    int nombredesommet;
-    int nombredarcs;
-    int **matriceadjacente;
-    t_sommet *sommets;
-    int **contraintes;
-} t_graphe;
+typedef struct { //structure d'un graphe
+    int nombredesommet; //nombre de sommets
+    int nombredarcs; //nombre d'arcs
+    int **matriceadjacente; //matrice d'adjacence du graphe qui est un tableau de tableau d'entiers
+    t_sommet *sommets;  //tableau des sommets du graphe
+    int **contraintes; //matrice des contraintes du graphe qui est un tableau de tableau d'entiers
+} t_graphe; //nom de la structure
 
-void liberer_graphe(t_graphe *graphe);
-int classerdecroissancesommets(const void *a, const void *b);
-void trier_sommets_decroissant(t_graphe *graphe);
-void compter_sommets_arcs(char *nom_fichier, int *nombredesommet, int *nombredarcs);
-t_graphe *creer_graphe(int nombredesommet, int nombredarcs);
-t_graphe *lire_graphe(char *nom_fichier);
-void afficher_graphe(t_graphe *graphe);
-void generer_fichier(char *nom_fichier, t_graphe *graphe);
-void colorer_graphe(t_graphe *graphe);
-void afficher_coloration(t_graphe *graphe);
+void liberer_graphe(t_graphe *graphe); //libère la mémoire allouée pour le graphe
+int classerdecroissancesommets(const void *a, const void *b); //fonction de comparaison pour le tri des sommets
+void trier_sommets_decroissant(t_graphe *graphe); //trie les sommets du graphe par ordre décroissant de degré
+void compter_sommets_arcs(char *nom_fichier, int *nombredesommet, int *nombredarcs); //compte le nombre de sommets et d'arcs dans le fichier
+t_graphe *creer_graphe(int nombredesommet, int nombredarcs); //crée un graphe
+t_graphe *lire_graphe(char *nom_fichier); //lit un graphe à partir d'un fichier
+void afficher_graphe(t_graphe *graphe); //affiche un graphe
+void generer_fichier(char *nom_fichier, t_graphe *graphe); //génère un fichier avec les informations de sommets et d'arêtes
+void colorer_graphe(t_graphe *graphe); //colorie le graphe
+void afficher_coloration(t_graphe *graphe); //affiche la coloration du graphe
 
 #endif //PROJET_ALGO_SOURCE_H
