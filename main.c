@@ -1,5 +1,5 @@
 #include "anna.h"
-#include "precedence.c"
+//#include "precedence.c"
 
 int main(){
 
