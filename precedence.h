@@ -1,22 +1,15 @@
-//
-// Created by Utilisateur on 21/11/2023.
-//
-
-#ifndef PROJET_TG1_PRECEDENCE_H
-#define PROJET_TG1_PRECEDENCE_H
-
 
 
 #ifndef TESTPRECEDENCE_PRECEDENCE_H
 #define TESTPRECEDENCE_PRECEDENCE_H
-
-
 
 typedef struct tache{
     int numeroTache;
     float dureeTache;
     struct tache* precedent;
     struct tache* suivant;
+    struct tache* usuivant;
+    struct tache* uprecedent;
     int placer;
 }t_tache;
 
@@ -72,13 +65,12 @@ t_chaine * creerchaine();
 t_tache* creertache(int tachetemp, float duree);
 void enfilerdansgraphe(t_graphe* graphe, t_tache* tache);
 void lientempprecedence(t_graphe* graphe, t_chaine* chaine);
-void remplissagestation(t_graphe* graphe);
+t_usine * remplissagestation(t_graphe* graphe);
 t_usine * creerusine();
 t_station * creerstation(t_usine* nouvelusine);
+void ajoutertachestationusine(t_tache* tache, t_usine* usine, t_graphe* graphe);
+t_tache * trouvertachenum(t_graphe *graphe, int sanspred);
+void affichageusine(t_usine* usine);
+
 
 #endif //TESTPRECEDENCE_PRECEDENCE_H
-
-
-
-
-#endif //PROJET_TG1_PRECEDENCE_H
