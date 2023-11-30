@@ -2,6 +2,8 @@
 
 #ifndef TESTPRECEDENCE_PRECEDENCE_H
 #define TESTPRECEDENCE_PRECEDENCE_H
+#include <stdio.h>
+#include <stdlib.h>
 
 typedef struct tache{
     int numeroTache;
