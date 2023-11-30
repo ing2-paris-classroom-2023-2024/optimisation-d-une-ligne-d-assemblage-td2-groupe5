@@ -1,11 +1,11 @@
-#include "anna.h"
-//#include "precedence.c"
+//#include "anna.h"
+#include "precedence.c"
 
 int main(){
+    t_graphe *graphe;
+    precedence(graphe);
+    //menuExclusions();
 
-    menuExclusions();
-    t_graphe* graphe;
 
-    //precedence(graphe);
     return 0;
 }

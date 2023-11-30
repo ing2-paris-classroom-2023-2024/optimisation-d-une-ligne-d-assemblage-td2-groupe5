@@ -2,8 +2,7 @@
 
 #ifndef TESTPRECEDENCE_PRECEDENCE_H
 #define TESTPRECEDENCE_PRECEDENCE_H
-#include <stdio.h>
-#include <stdlib.h>
+#include "header.h"
 
 typedef struct tache{
     int numeroTache;
@@ -68,7 +67,6 @@ t_maillon * creermaillon(int depart, int fin);
 t_chaine * creerchaine();
 t_tache* creertache(int tachetemp, float duree);
 void enfilerdansgraphe(t_graphe* graphe, t_tache* tache);
-void lientempprecedence(t_graphe* graphe, t_chaine* chaine);
 t_usine * remplissagestation(t_graphe* graphe);
 t_usine * creerusine();
 t_station * creerstation(t_usine* nouvelusine);
