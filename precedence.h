@@ -15,7 +15,9 @@ typedef struct tache{
 
 typedef struct graphe{
     int ordre;
+    int nbdetachetemp;
     int* tache;
+    int nbsommetfini;
     int ** matrice;
     int nb_arete;
     t_tache * tetetache;
@@ -69,8 +71,10 @@ t_usine * remplissagestation(t_graphe* graphe);
 t_usine * creerusine();
 t_station * creerstation(t_usine* nouvelusine);
 void ajoutertachestationusine(t_tache* tache, t_usine* usine, t_graphe* graphe);
-t_tache * trouvertachenum(t_graphe *graphe, int sanspred);
+t_tache * trouvertachenum(t_graphe *graphe, int num);
 void affichageusine(t_usine* usine);
+void tachesinitiales(t_graphe *graphe, t_usine *usine);
+void autrestaches(t_usine* usine, t_graphe* graphe);
 
 
 #endif //TESTPRECEDENCE_PRECEDENCE_H
