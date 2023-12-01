@@ -4,11 +4,11 @@
 #include "anna.h"
 
 void initialiserGraphe(t_graphe *graphe) {
-    graphe->nbSommets = MAX_SOMMETS;
-    for (int i = 0; i < MAX_SOMMETS; i++) {
+    graphe->nbSommets = 100;
+    for (int i = 0; i < 100; i++) {
         graphe->degres[i] = 0;
         graphe->sommetsTries[i] = 0;
-        for (int j = 0; j < MAX_SOMMETS; j++) {
+        for (int j = 0; j < 100; j++) {
             graphe->matriceAdjacence[i][j] = 0;
         }
         graphe->couleurs[i][0] = '\0';
@@ -33,6 +33,32 @@ void lireFichier(char *nomFichier, t_graphe *graphe) {
 
     fclose(fichier);
 }
+
+/*
+int compterExclusions(char *nomFichier) {
+    FILE *fichier = fopen(nomFichier, "r");
+    if (fichier == NULL) {
+        printf("Impossible d'ouvrir le fichier.\n");
+        return -1; // Retourne -1 en cas d'erreur
+    }
+
+    int nombreExclusions = 0;
+    char ligne[100]; // Taille de ligne à ajuster selon les besoins
+
+    while (fgets(ligne, sizeof(ligne), fichier) != NULL) {
+        // Ici, vous pouvez ajouter des conditions pour identifier une ligne d'exclusion
+        // Par exemple, si une exclusion est définie d'une manière spécifique dans le fichier
+
+        // Pour compter chaque ligne comme une exclusion, vous pouvez simplement incrémenter le compteur
+        nombreExclusions++;
+    }
+
+    printf("Il y a %d exclusions dans le fichier.\n", nombreExclusions);
+
+    fclose(fichier);
+    return nombreExclusions;
+}
+*/
 
 void calculerDegres(t_graphe *graphe) {
     for (int i = 0; i < graphe->nbSommets; i++) {
@@ -113,6 +139,9 @@ void menuExclusions(){
     initialiserGraphe(&graphe); // Initialiser le graphe
 
     lireFichier(nomFichier, &graphe); // Lecture du fichier
+
+    //compterExclusions(nomFichier); // Compter le nombre d'exclusions
+
 
     calculerDegres(&graphe); // Calculer les degrés des sommets
 

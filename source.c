@@ -4,7 +4,7 @@
 
 #include "source.h" //bibliothèque contenant les prototypes des fonctions et les structures
 
-void liberer_graphe(t_graphe *graphe) { //fonction qui libère la mémoire allouée pour le graphe
+void liberer_graphe(t_grapheS *graphe) { //fonction qui libère la mémoire allouée pour le graphe
 
     for (int i = 0; i < graphe->nombredesommet; i++) { //parcours de la matrice d'adjacence
         free(graphe->matriceadjacente[i]); //libération de la mémoire allouée pour chaque ligne de la matrice d'adjacence
@@ -21,7 +21,7 @@ int classerdecroissancesommets(const void *a, const void *b) { //fonction de com
     return (sommet2->degre - sommet1->degre); //on retourne la différence entre le degré du sommet 2 et le degré du sommet 1
 }
 
-void trier_sommets_decroissant(t_graphe *graphe) { //fonction qui trie les sommets du graphe par ordre décroissant de degré
+void trier_sommets_decroissant(t_grapheS *graphe) { //fonction qui trie les sommets du graphe par ordre décroissant de degré
     qsort(graphe->sommets, graphe->nombredesommet, sizeof(t_sommet), classerdecroissancesommets); //appel de la fonction qsort qui trie les sommets du graphe par ordre décroissant de degré
 } //qsort est une fonction de la bibliothèque standard du langage C qui permet de trier un tableau
 
@@ -48,9 +48,9 @@ void compter_sommets_arcs(char *nom_fichier, int *nombredesommet, int *nombredar
     (*nombredesommet)++; //on incrémente le nombre de sommets pour avoir le nombre de sommets réel
 }
 
-t_graphe *creer_graphe(int nombredesommet, int nombredarcs) { //fonction qui crée un graphe
+t_grapheS *creer_graphe(int nombredesommet, int nombredarcs) { //fonction qui crée un graphe
 
-    t_graphe *graphe = malloc(sizeof(t_graphe)); //allocation de la mémoire pour le graphe
+    t_grapheS *graphe = malloc(sizeof(t_grapheS)); //allocation de la mémoire pour le graphe
     graphe->nombredesommet = nombredesommet; //initialisation du nombre de sommets
     graphe->nombredarcs = nombredarcs; //initialisation du nombre d'arcs
     graphe->sommets = malloc(nombredesommet * sizeof(t_sommet)); //allocation de la mémoire pour le tableau des sommets
@@ -69,12 +69,12 @@ t_graphe *creer_graphe(int nombredesommet, int nombredarcs) { //fonction qui cr�
     return graphe; //on retourne le graphe
 }
 
-t_graphe *lire_graphe(char *nom_fichier) { //fonction qui lit un graphe à partir d'un fichier
+t_grapheS *lire_graphe(char *nom_fichier) { //fonction qui lit un graphe à partir d'un fichier
 
     int nombredesommet, nombredarcs; //déclaration des variables nombredesommet et nombredarcs
     compter_sommets_arcs(nom_fichier, &nombredesommet, &nombredarcs); //appel de la fonction compter_sommets_arcs
 
-    t_graphe *graphe = creer_graphe(nombredesommet, nombredarcs); //appel de la fonction creer_graphe
+    t_grapheS *graphe = creer_graphe(nombredesommet, nombredarcs); //appel de la fonction creer_graphe
 
     FILE *fichier = fopen(nom_fichier, "r"); //ouverture du fichier en mode lecture
     if (fichier == NULL) { //si le fichier n'est pas ouvert ou n'existe pas
@@ -98,7 +98,7 @@ t_graphe *lire_graphe(char *nom_fichier) { //fonction qui lit un graphe à parti
     return graphe; //on retourne le graphe
 }
 
-void afficher_graphe(t_graphe *graphe) { //fonction qui affiche un graphe
+void afficher_graphe(t_grapheS *graphe) { //fonction qui affiche un graphe
     printf("Nombre de sommets : %d\n", graphe->nombredesommet); //affichage du nombre de sommets
     printf("Nombre de contraintes : %d\n", graphe->nombredarcs); //affichage du nombre d'arcs
     printf("Matrice d'adjacence :\n"); //affichage de la matrice d'adjacence
@@ -119,7 +119,7 @@ void afficher_graphe(t_graphe *graphe) { //fonction qui affiche un graphe
     } //on fait cela pour afficher la liste des sommets par degré
 } //on fait cela pour afficher le graphe
 
-void generer_fichier(char *nom_fichier, t_graphe *graphe) { //fonction qui génère un fichier avec les informations de sommets et d'arêtes
+void generer_fichier(char *nom_fichier, t_grapheS *graphe) { //fonction qui génère un fichier avec les informations de sommets et d'arêtes
 
     FILE *fichier = fopen(nom_fichier, "w"); //ouverture du fichier en mode écriture
     if (fichier == NULL) { //si le fichier n'est pas ouvert ou n'existe pas
@@ -137,7 +137,7 @@ void generer_fichier(char *nom_fichier, t_graphe *graphe) { //fonction qui gén�
     fclose(fichier); //fermeture du fichier
 }
 
-void colorer_graphe(t_graphe *graphe) { //fonction qui colorie le graphe
+void colorer_graphe(t_grapheS *graphe) { //fonction qui colorie le graphe
     trier_sommets_decroissant(graphe); //appel de la fonction trier_sommets_decroissant
 
     for (int i = 0; i < graphe->nombredesommet; i++) { //parcours de la matrice d'adjacence
@@ -165,9 +165,18 @@ void colorer_graphe(t_graphe *graphe) { //fonction qui colorie le graphe
     }
 }
 
-void afficher_coloration(t_graphe *graphe) { //fonction qui affiche la coloration du graphe
+void afficher_coloration(t_grapheS *graphe) { //fonction qui affiche la coloration du graphe
     printf("Coloration du graphe :\n"); //affichage de la coloration du graphe
     for (int i = 0; i < graphe->nombredesommet; i++) { //parcours de la matrice d'adjacence
         printf("Sommet %d : Couleur %d\n", graphe->sommets[i].identite + 1, graphe->sommets[i].couleur + 1); //affichage du sommet et de sa couleur
     } //on fait cela pour afficher la coloration du graphe
 }
+
+void menuExcluS(){//fonction principale du programme
+    t_grapheS *graphe = lire_graphe("exclusions.txt"); //lecture du graphe à partir du fichier "exclusions.txt"
+    afficher_graphe(graphe); //affichage du graphe
+    generer_fichier("graphe.txt", graphe); //génération du fichier "graphe.txt" contenant les informations du graphe
+    colorer_graphe(graphe); //coloration du graphe (welsch-powell)
+    afficher_coloration(graphe); //affichage de la coloration du graphe
+    liberer_graphe(graphe); //libération de la mémoire allouée pour le graphe
+}//fin de la fonction principale

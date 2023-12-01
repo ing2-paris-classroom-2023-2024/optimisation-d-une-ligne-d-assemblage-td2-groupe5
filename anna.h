@@ -7,22 +7,20 @@
 
 #include "header.h"
 
-//CHANGER LES VARIABLES GLOBALES
-#define MAX_SOMMETS 100 // Nombre maximum de sommets dans le graphe
-#define MAX_COULEURS 10 // Nombre maximum de couleurs
-
 typedef struct graphe{
     int nbSommets;
     int nbArcs;
-    int matriceAdjacence[MAX_SOMMETS][MAX_SOMMETS];
-    int degres[MAX_SOMMETS];
-    int sommetsTries[MAX_SOMMETS];
-    char couleurs[MAX_SOMMETS][MAX_COULEURS];
+    int matriceAdjacence[100][100];
+    int degres[100];
+    int sommetsTries[100];
+    char couleurs[100][10];
 } t_graphe;
 
 void initialiserGraphe(t_graphe *graphe);
 
 void lireFichier(char *nomFichier, t_graphe *graphe);
+
+//int compterExclusions(char *nomFichier);
 
 void calculerDegres(t_graphe *graphe);
 

@@ -88,6 +88,12 @@
 		<Unit filename="C:/Users/annap/CLionProjects/projetV1/main.c">
 			<Option target="projet_TG1"/>
 		</Unit>
+		<Unit filename="C:/Users/annap/CLionProjects/projetV1/source.c">
+			<Option target="projet_TG1"/>
+		</Unit>
+		<Unit filename="C:/Users/annap/CLionProjects/projetV1/source.h">
+			<Option target="projet_TG1"/>
+		</Unit>
 		<Unit filename="C:/Users/annap/CLionProjects/projetV1/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
