@@ -1,15 +1,11 @@
 #include "precedence.h"
-
+#include "exclusion.c"
 
 
 
 void precedence(t_graphe* graphe){
-    //t_graphe* graphe;
     graphe = lirefichier();
-
-    printf("graphe : %d", graphe->ordre);
-    t_usine * usine = (t_usine*) malloc(sizeof(t_usine));
-    usine = remplissagestation(graphe);
+    t_usine * usine = remplissagestation(graphe);
     affichageusine(usine);
     free(usine);
     free(graphe);
@@ -49,7 +45,7 @@ t_graphe* lirefichier(){
 
     while(fscanf(fichier, "%d %d", &sommet_avant, &sommet_apres) != EOF){
         graphe->nb_arete++;
-        //printf("%d %d\n", sommet_avant, sommet_apres);
+
         t_maillon* maillon = creermaillon(sommet_avant, sommet_apres);
         enfiler(chaine, maillon);
         if(dejadanstab(sommet_avant, tableau, nb_sommet) == 0){
@@ -68,14 +64,11 @@ t_graphe* lirefichier(){
         }
     }
 
-//Affichage des sommets
-
-    printf("les sommets : %d\n", nb_sommet);
+    /* //affichage de tout les sommets existant
+    printf("nb sommet : %d\n", nb_sommet);
     for(int l = 0; l < nb_sommet; l++){
         printf("%d ", tableau[l]);
-    }
-    printf("\n\n");
-
+    }*/
 
     graphe->nbsommetfini = 0;
     graphe->ordre = max;
@@ -95,6 +88,8 @@ t_graphe* lirefichier(){
         graphe->tache[j] = tableau[j];
     }
 
+    exclusion(graphe);
+
     rewind(fichier); //revenir en haut du fichier
 
 
@@ -105,7 +100,12 @@ t_graphe* lirefichier(){
 
 
 
-    //affichafge matrice adjacence
+    t_maillon* repere = chaine->tete;
+    while (repere != NULL){
+        repere = repere->suivant;
+    }
+
+    //affichage matrice adjacence
     /*
     printf("\n\n");
     for(int u = 0; u < graphe->ordre; u++){
@@ -121,6 +121,8 @@ t_graphe* lirefichier(){
 
     fclose(fichier);
 
+
+
     free(chaine);
     return graphe;
 }
@@ -130,6 +132,7 @@ t_usine * remplissagestation(t_graphe* graphe){
     tachesinitiales(graphe, usine); //taches initiales du graphe
     autrestaches(usine, graphe); //mettre les autres taches dans l'usine
 
+    //affichageusine(usine);
     return usine;
 }
 
@@ -169,9 +172,10 @@ void tachesinitiales(t_graphe *graphe, t_usine *usine) {
 
         if (sanspred == 1) {
             //trouver la tache associé à ce numero
+
             t_tache *tachetemp = trouvertachenum(graphe, g+1);
             //ajouter la tache a l'usine
-            ajoutertachestationusine(tachetemp, usine, graphe);
+            ajoutertachestationusine(tachetemp, usine, graphe, stationtemp);
             //ajouter cette tache à la premiere station disponible
         }
     }
@@ -205,7 +209,6 @@ void enfiler(t_chaine* chaine, t_maillon* maillon){
 }
 
 void tacheassignation(t_chaine* chaine, t_graphe* graphe) {
-
     FILE * fichiertemps = fopen("temps.txt", "r");
     if(!fichiertemps){
         printf("fichier temps introuvable");
@@ -214,7 +217,6 @@ void tacheassignation(t_chaine* chaine, t_graphe* graphe) {
     int tache = 0;
     float duree = 0.1;
     int compteur = 0;
-
     while(compteur < 30){
         fscanf(fichiertemps, "%d %f", &tache, &duree);
         t_tache* tachetemporaire = creertache(tache, duree);
@@ -236,7 +238,6 @@ t_tache* creertache(int tachetemp, float duree){
     tache->uprecedent = NULL;
     tache->precedent = NULL;
     tache->suivant = NULL;
-
 
     return tache;
 }
@@ -296,44 +297,137 @@ t_station * creerstation(t_usine* nouvelusine){
     return nouvstation;
 }
 
-void ajoutertachestationusine(t_tache* tache, t_usine* usine, t_graphe* graphe){
+void ajoutertachestationusine(t_tache* tache, t_usine* usine, t_graphe* graphe, t_station * stationmin){
     if(tache->placer == 0) {
-        t_station *var = usine->stationtete;
+        //printf("\najouter la tache %d\n", tache->numeroTache);
+        t_station *var = stationmin; //usine->stationtete;
         t_station *var2 = NULL;
         t_tache *temptache;
         //trouver la permière station disponible pour la tache
         int bonnestation = 10;
+        int exclusion = 2;
+        int compteur =0;
+        int changement = 0;
+
 
         while (bonnestation != 0) {
 
-            if (bonnestation == 1) { //si il y a dejà eut une boucle mais que ce n'était pas la bonne
+            if (bonnestation == 1) { //si il y a dejà eut une boucle mais que la precedence ne marchait pas
                 var = var->suivant;
+                //printf("\nprobleme de precedence\n");
+                exclusion = 2;
+                if (var == NULL) { //si la station est pleine créer une autre station
+                    var = creerstation(usine);
+                }
+                //printf("station %d \n",var->tachetete->numeroTache);
             }
             bonnestation = 0;
             if (var == NULL) { //si la station est pleine créer une autre station
                 var = creerstation(usine);
             } else {
-                while ((var->dureetotal + tache->dureeTache) > var->dureemax) {
-                    var = var->suivant;
-                    if (var == NULL) { //si la station est pleine créer une autre station
-                        var = creerstation(usine);
+/*
+                if(var->tachetete != NULL) {
+                    printf("station test %d\n", var->tachetete->numeroTache);
+                }*/
+
+                compteur = 0;
+                while (exclusion != 0) {
+                    /*
+                    if(compteur != 0){
+                        var = var->suivant;
+                        if (var == NULL) { //si la station est pleine créer une autre station
+                            var = creerstation(usine);
+                        }
+                    }
+                    compteur = 0;
+                    */
+
+                    /*
+                    if(exclusion == 1){
+                        var = var->suivant;
+                        if (var == NULL) { //si la station est pleine créer une autre station
+                            var = creerstation(usine);
+                        }
+                    }*/
+
+                    exclusion = 0;
+                    changement = 0;
+                    ///contrainte de temps
+                    while ((var->dureetotal + tache->dureeTache) > var->dureemax) {
+                        var = var->suivant;
+                        if (var == NULL) { //si la station est pleine créer une autre station
+                            var = creerstation(usine);
+                        }
+                    }
+                    if(var->tachetete != NULL) {
+                        //printf("station temps %d\n", var->tachetete->numeroTache);
+                    }
+
+
+                    ///contrainte d'exclusion
+                    temptache = var->tachetete;
+                    while (temptache != NULL){
+                        if(graphe->mexclusion[temptache->numeroTache-1][tache->numeroTache-1] == 1){
+                            //printf("exclusion trouve : %d %d\n", temptache->numeroTache, tache->numeroTache);
+                            exclusion++;
+                        }
+                        else{
+                            //printf("pas exclusion : %d %d\n", temptache->numeroTache, tache->numeroTache);
+                        }
+                        temptache = temptache->usuivant;
+                    }
+
+                    if(exclusion != 0){
+                        //printf("exclusion trouve verifier %d\n", tache->numeroTache);
+                        var = var->suivant;
+                        changement++;
+                        if (var == NULL) { //si la station est pleine créer une autre station
+                            var = creerstation(usine);
+                        }
+                        exclusion = 1;
+                        compteur++;
+                    }
+                    else{
+                        //printf("ajouter %d \n", tache->numeroTache);
+                    }
+
+                    if(var->tachetete != NULL) {
+                        //printf("sattion exclusion %d\n", var->tachetete->numeroTache);
                     }
                 }
             }
 
-            //verifier qu'il n'y a pas de tache precedente avant
-
+            if(var->tachetete != NULL) {
+                //printf("\nvar1 tete %d\n\n", var->tachetete->numeroTache);
+            }
 
             var2 = var->suivant;
+
+            ///contrainte de précédence
             if(var2 != NULL) {
                 temptache = var2->tachetete; //premiere tache de la station suivante
                 while (temptache != NULL) {
                     if (graphe->matrice[temptache->numeroTache - 1][tache->numeroTache - 1] == 1) { //si il y a un predecesseur dans l'une des stations d'après
                         bonnestation = 1;
+                        //printf("station a dejà des predecesseurs dans les stations suivantes\n");
                     }
-                    temptache = temptache->suivant;
+                    temptache = temptache->usuivant;
                 }
+                var2 = var2->suivant; //verifier toutes les stations suivantes
             }
+
+            if(var->tachetete != NULL) {
+                //printf("\nvar1 tete %d\n\n", var->tachetete->numeroTache);
+            }
+
+        }
+
+
+        if(var->tachetete != NULL) {
+            //printf("\nvar2 tete %d\n\n", var->tachetete->numeroTache);
+        }
+        if(var->tachetete != NULL) {
+            //printf("ajouter final %d dans %d\n", tache->numeroTache, var->tachetete->numeroTache);
         }
 
         //ajoutez la tache à la bonne station
@@ -354,7 +448,8 @@ void ajoutertachestationusine(t_tache* tache, t_usine* usine, t_graphe* graphe){
         }
 
         graphe->nbsommetfini++;
-
+        //printf("tache ajoute %d\n", tache->numeroTache);
+        //affichageusine(usine);
     }
 }
 
@@ -371,6 +466,7 @@ t_tache * trouvertachenum(t_graphe *graphe, int num) {
     temp = graphe->tetetache;
     if(trouve == 1) {
         while (temp->numeroTache != num) {
+            //printf("1 ");
             temp = temp->suivant;
         }
     }
@@ -381,6 +477,7 @@ t_tache * trouvertachenum(t_graphe *graphe, int num) {
         enfilerdansgraphe(graphe, temp);
     }
 
+    //printf("tache trouve\n");
     return temp;
 }
 
@@ -416,11 +513,13 @@ void autrestaches(t_usine* usine, t_graphe* graphe){
         while (tache != NULL){ //parcours de toutes les taches de l'usine
             erreur = 0;
             aplacer = 0;
+
             for(int j = 0; j < graphe->ordre; j++){ //parcours de la matrice d'adjacence sur la ligne voulu
                 erreur = 0;
                 if(graphe->matrice[tache->numeroTache-1][j] == 1) { //suivant trouve
                     temp = trouvertachenum(graphe, j + 1); //le suivant s'appelle temp
                     if (temp->placer == 0) { //si la tache n'est pas déjà placé
+                        //ajoutertachestationusine(tache, usine, graphe);
                         aplacer = 1;
                     }
 
@@ -434,16 +533,16 @@ void autrestaches(t_usine* usine, t_graphe* graphe){
                         }
                     }
                     if (aplacer == 1 && erreur == 0) { //si on peut la placer et qu'il n'y a pas d'erreur
-                        ajoutertachestationusine(temp, usine, graphe); //ajouter la tache
+                        ajoutertachestationusine(temp, usine, graphe, stationtemp); //ajouter la tache
                     }
-
+                    else{
+                    }
                 }
             }
 
             tache = tache->usuivant; //passer à la tache suivante dans l'usine
 
         }
-
         stationtemp = stationtemp->suivant; //passer à la station suivante
     }
 

@@ -65,6 +65,14 @@ build CMakeFiles/projet_TG1.dir/anna.c.obj: C_COMPILER__projet_TG1_Debug C$:/Use
   TARGET_COMPILE_PDB = CMakeFiles\projet_TG1.dir\
   TARGET_PDB = projet_TG1.pdb
 
+build CMakeFiles/projet_TG1.dir/source.c.obj: C_COMPILER__projet_TG1_Debug C$:/Users/Utilisateur/CLionProjects/projet_TG1/source.c || cmake_object_order_depends_target_projet_TG1
+  DEP_FILE = CMakeFiles\projet_TG1.dir\source.c.obj.d
+  FLAGS = -g
+  OBJECT_DIR = CMakeFiles\projet_TG1.dir
+  OBJECT_FILE_DIR = CMakeFiles\projet_TG1.dir
+  TARGET_COMPILE_PDB = CMakeFiles\projet_TG1.dir\
+  TARGET_PDB = projet_TG1.pdb
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target projet_TG1
@@ -73,7 +81,7 @@ build CMakeFiles/projet_TG1.dir/anna.c.obj: C_COMPILER__projet_TG1_Debug C$:/Use
 #############################################
 # Link the executable projet_TG1.exe
 
-build projet_TG1.exe: C_EXECUTABLE_LINKER__projet_TG1_Debug CMakeFiles/projet_TG1.dir/main.c.obj CMakeFiles/projet_TG1.dir/anna.c.obj
+build projet_TG1.exe: C_EXECUTABLE_LINKER__projet_TG1_Debug CMakeFiles/projet_TG1.dir/main.c.obj CMakeFiles/projet_TG1.dir/anna.c.obj CMakeFiles/projet_TG1.dir/source.c.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\projet_TG1.dir
