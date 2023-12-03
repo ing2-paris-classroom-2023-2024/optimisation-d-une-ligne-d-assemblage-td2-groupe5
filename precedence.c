@@ -448,23 +448,23 @@ void autrestaches(t_usine* usine, t_graphe* graphe){ //toruver les taches non in
 
 void menu(t_graphe* graphe){
     int menuchoix = 0;
-    while (menuchoix > 7 || menuchoix < 1){
+    while (menuchoix > 8 || menuchoix < 1){
         printf("MENU :\n");
         printf("Quelle contrainte voulez vous utiliser ?\n");
-        printf("1- temps\n2- exclusion\n3-precedence et temps\n4-temps et exclusion\n5- precedence et exclusion\n6- temps, exclusion et precedence\n");
-        printf("7- quitter\n");
+        printf("1- temps\n2- exclusion\n3-precedence\n4-temps et exclusion\n5- precedence et exclusion\n6- temps et precedence\n7- temps, exclusion et precedence\n");
+        printf("8- quitter\n");
         scanf("%d",&menuchoix);
     }
-    if(menuchoix == 1 || menuchoix == 3 || menuchoix == 4 || menuchoix == 6){
+    if(menuchoix == 1 || menuchoix == 4 || menuchoix == 6|| menuchoix == 7 ){
         graphe->time = 1;
     }
-    if(menuchoix == 2 || menuchoix == 4 || menuchoix == 5 || menuchoix == 6){
+    if(menuchoix == 2 || menuchoix == 4 || menuchoix == 5 || menuchoix == 7){
         graphe->excl = 1;
     }
-    if(menuchoix == 3 || menuchoix == 5 || menuchoix == 6){
+    if(menuchoix == 3 || menuchoix == 5 || menuchoix == 6 || menuchoix == 7){
         graphe->preced = 1;
     }
-    if(menuchoix == 7){
+    if(menuchoix == 8){
         exit(1);
     }
 
