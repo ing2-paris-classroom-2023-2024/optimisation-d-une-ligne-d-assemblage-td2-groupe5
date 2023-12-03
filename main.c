@@ -5,7 +5,9 @@
 
 int main(){
     t_graphe *graphe;
-    precedence(graphe);
+    while (1) {
+        precedence(graphe); //appeler le sous programme qui va tout faire
+    }
     //menuExclusions();
     //menuExcluS();
 
